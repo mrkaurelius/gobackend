@@ -27,8 +27,6 @@ func ValidateUser(username, password string) bool {
 	if db == nil {
 		initDatabase("/home/mrk1/go/src/github.com/mrkaurelius/gobackend/database/db.db")
 		log.Println("Database initialized")
-	} else {
-		log.Println("Database already initialized")
 	}
 
 	rows, err := db.Query("SELECT username, password  FROM users WHERE username=(?)", username)
@@ -116,6 +114,19 @@ func AllUserPostsJSON() []byte {
 	}
 
 	return PostsJSON
+}
+
+func AddPostDB(post Post) {
+
+	fmt.Println(post.User, post.Title, post.Date, post.Post)
+
+	if db == nil {
+		initDatabase("/home/mrk1/go/src/github.com/mrkaurelius/gobackend/database/db.db")
+		log.Println("Database initialized")
+	}
+
+	statement, _ := db.Prepare("INSERT INTO posts (user, date, title, post) VALUES (?, ?, ?, ?)")
+	statement.Exec(post.User, post.Date, post.Title, post.Post)
 }
 
 func initDatabase(path string) {

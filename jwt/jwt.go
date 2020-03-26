@@ -20,7 +20,7 @@ func CreateToken(username string) string {
 }
 
 // VerifyToken
-func VerifyToken(tokenString string) bool {
+func VerifyToken(tokenString string) (string, bool) {
 	// sample token string taken from the New example
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -34,13 +34,17 @@ func VerifyToken(tokenString string) bool {
 	})
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		fmt.Println(claims["username"])
-		return true
+		// fmt.Print("claims: ")
+		// fmt.Println(claims["username"])
+
+		// type assert
+		s, _ := claims["username"].(string)
+		return s, true
 	}
 
 	fmt.Println(err)
 
-	return false
+	return "", false
 }
 
 func main() {
