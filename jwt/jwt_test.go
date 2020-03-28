@@ -20,8 +20,7 @@ func TestCreateToken(t *testing.T) {
 
 func TestVerifyToken(t *testing.T) {
 	token := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1yayJ9.M5v2V4WxhRxUSRyJ_JD2-KOm94zk1TvFyZHDcBcDHUs"
-	ret, username := jwt.VerifyToken(token)
-
+	username, ret := jwt.VerifyToken(token)
 	if ret {
 		t.Log(username)
 	} else {

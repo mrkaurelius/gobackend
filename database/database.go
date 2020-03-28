@@ -25,7 +25,7 @@ var db *sql.DB = nil
 func ValidateUser(username, password string) bool {
 	// bind user
 	if db == nil {
-		initDatabase("/home/mrk1/go/src/github.com/mrkaurelius/gobackend/database/db.db")
+		initDatabase("./database/db.db")
 		log.Println("Database initialized")
 	}
 
@@ -35,7 +35,7 @@ func ValidateUser(username, password string) bool {
 		return false
 	}
 
-	// defer rows.Close()
+	defer rows.Close()
 	var usernameDB string
 	var passwordDB string
 
@@ -58,7 +58,7 @@ func ValidateUser(username, password string) bool {
 // UserPostsJSON, handle errors
 func UserPostsJSON(username string) []byte {
 	if db == nil {
-		initDatabase("/home/mrk1/go/src/github.com/mrkaurelius/gobackend/database/db.db")
+		initDatabase("./database/db.db")
 	}
 
 	posts := make([]Post, 0)
@@ -85,14 +85,14 @@ func UserPostsJSON(username string) []byte {
 // AllUserPostsJSON returns all posts for home page
 func AllUserPostsJSON() []byte {
 	if db == nil {
-		initDatabase("/home/mrk1/go/src/github.com/mrkaurelius/gobackend/database/db.db")
+		initDatabase("./database/db.db")
 	}
 
 	posts := make([]Post, 0)
 
 	// order by desc
 	rows, err := db.Query("SELECT user, date, post, title FROM posts ORDER BY date DESC")
-	//defer rows.Close()
+	defer rows.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -121,12 +121,16 @@ func AddPostDB(post Post) {
 	fmt.Println(post.User, post.Title, post.Date, post.Post)
 
 	if db == nil {
-		initDatabase("/home/mrk1/go/src/github.com/mrkaurelius/gobackend/database/db.db")
+		initDatabase("./database/db.db")
 		log.Println("Database initialized")
 	}
 
 	statement, _ := db.Prepare("INSERT INTO posts (user, date, title, post) VALUES (?, ?, ?, ?)")
-	statement.Exec(post.User, post.Date, post.Title, post.Post)
+	_, err := statement.Exec(post.User, post.Date, post.Title, post.Post)
+	if err != nil {
+		fmt.Println(err)
+	}
+
 }
 
 func initDatabase(path string) {

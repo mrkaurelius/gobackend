@@ -19,11 +19,11 @@ CREATE TABLE posts (
 -- datetime format YYYY-MM-DD
 
 INSERT INTO posts (user, date, title, post) 
-    VALUES("mrk","2020-11-11","title","lorem ipsum dolor sit amet");
+    VALUES("mrk","2020-11-11","Nasıl Vue Yazılmaz","lorem ipsum dolor sit amet");
 INSERT INTO posts (user, date, title, post)
-    VALUES("mrk","2020-11-12","title","lorem ipsum dolor sit amet");
+    VALUES("ayse","2020-11-12","Doğa değil Gümüşhane","lorem ipsum dolor sit amet");
 INSERT INTO posts (user, date, title, post)
-    VALUES("mrk","2020-11-13","title","lorem ipsum dolor sit amet");
+    VALUES("mrk","2020-11-13","İhtiyar Oldum","lorem ipsum dolor sit amet");
 
 
 INSERT INTO users (username, password) 

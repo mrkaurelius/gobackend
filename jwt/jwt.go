@@ -11,7 +11,7 @@ var secret []byte = []byte("secret")
 //CreateToken
 func CreateToken(username string) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"username": "mrk",
+		"username": username,
 	})
 
 	// Sign and get the complete encoded token as a string using the secret
@@ -33,9 +33,18 @@ func VerifyToken(tokenString string) (string, bool) {
 		return secret, nil
 	})
 
+	if err != nil {
+		fmt.Println(err)
+		//return "", false
+	}
+
+	if token == nil {
+		return "", false
+	}
+
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		// fmt.Print("claims: ")
-		// fmt.Println(claims["username"])
+		fmt.Print("claims: ")
+		fmt.Println(claims["username"])
 
 		// type assert
 		s, _ := claims["username"].(string)

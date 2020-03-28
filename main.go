@@ -3,6 +3,8 @@ package main
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -18,6 +20,10 @@ func userAuth(c *gin.Context) {
 	// connect to databaase and check user cridentals
 	username := c.PostForm("username")
 	password := c.PostForm("password")
+
+	body, _ := ioutil.ReadAll(c.Request.Body)
+	println(string(body))
+	fmt.Println(username, password)
 
 	pwbyte := []byte(password)
 	sha256 := sha256.Sum256([]byte(pwbyte))
@@ -55,7 +61,7 @@ func addPost(c *gin.Context) {
 		post.Post = c.PostForm("post")
 		post.Date = time.Now().Format("2006-01-02")
 		post.User = username
-
+		fmt.Println(username)
 		database.AddPostDB(post)
 
 		c.Status(http.StatusOK)
